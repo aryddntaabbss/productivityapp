@@ -10,6 +10,9 @@ import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import customAvatarImage from "../../image/rllogo.png";
 import { makeStyles } from "@material-ui/core/styles";
 import { loginUser } from "../Store/UserSlice";
@@ -112,6 +115,10 @@ export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showAlert, setShowAlert] = useState(false); // State untuk mengontrol visibilitas Alert
+  const [alertSeverity, setAlertSeverity] = useState("warning"); // Tingkat keparahan (severity) untuk Alert
+  const [alertMessage, setAlertMessage] = useState(""); // Pesan untuk ditampilkan dalam Alert
+  const [loading, setLoading] = useState(false); // State untuk mengontrol loading
 
   // redux state
   const dispatch = useDispatch();
@@ -121,19 +128,46 @@ export const Login = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validasi agar email dan username tidak kosong
+    if (!email || !password) {
+      setAlertSeverity("warning");
+      setAlertMessage("Email dan password harus diisi!");
+      setShowAlert(true);
+      return;
+    }
+
+    setLoading(true);
+
     let userCredentials = {
       email,
       password,
     };
-    dispatch(loginUser(userCredentials)).then((result) => {
+
+    try {
+      const result = await dispatch(loginUser(userCredentials));
+
       if (result.payload) {
         setEmail("");
         setPassword("");
+        setShowAlert(false);
+        setLoading(false); // Nonaktifkan loading setelah login berhasil
         navigate("/");
+      } else {
+        setAlertSeverity("error");
+        setAlertMessage("Email atau password salah!");
+        setShowAlert(true);
+        setLoading(false); // Nonaktifkan loading setelah login gagal
       }
-    });
+    } catch (error) {
+      console.error("Error during login:", error);
+      setAlertSeverity("error");
+      setAlertMessage("Terjadi kesalahan. Silakan coba lagi nanti.");
+      setShowAlert(true);
+      setLoading(false); // Nonaktifkan loading dalam kasus error
+    }
   };
 
   const classes = useStyles();
@@ -204,6 +238,15 @@ export const Login = () => {
               Login
             </Button>
           </form>
+          {showAlert && (
+            <Alert severity={alertSeverity}>
+              <AlertTitle>
+                {alertSeverity === "warning" ? "Peringatan" : "Error"}
+              </AlertTitle>
+              <strong>{alertMessage}</strong>
+            </Alert>
+          )}
+          {loading && <CircularProgress className={classes.loadingSpinner} />}
         </div>
       </Grid>
     </Grid>
