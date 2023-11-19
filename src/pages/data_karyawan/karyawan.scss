@@ -1,0 +1,21 @@
+.list {
+  display: flex;
+  width: 100%;
+
+  .listContainer {
+    flex: 6;
+  }
+
+  .searchCrew {
+    width: 18%;
+    margin-left: 76%;
+  }
+
+  .listTitle {
+    width: 50%;
+    font-size: 24px;
+    display: flex;
+    margin-left: 45%;
+    align-items: center;
+  }
+}
