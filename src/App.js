@@ -6,19 +6,10 @@ import Notification from "./components/notifikasi/Notifikasi";
 import Profile from "./components/profile/Profile";
 import EditProfil from "./components/edit_profile/Edit";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-// import { userInputs } from "./formSource";
 import Karyawan from "./pages/data_karyawan/Karyawan";
 
 function App ()
 {
-  // function App() {
-  // const token = localStorage.getItem('accessToken');
-
-  //   if ( !token )
-  //   {
-  //     return <Signin />
-  //   }
-
   return (
     <div>
       <BrowserRouter>
