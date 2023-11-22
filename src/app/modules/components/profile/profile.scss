@@ -1,0 +1,100 @@
+.single {
+  display: flex;
+  width: 100%;
+  .singleContainer {
+    flex: 6;
+    background-color: #e3e3e3;
+
+    .top {
+      padding: 20px;
+      display: flex;
+      gap: 20px;
+
+      .left {
+        background-color: #ffffff;
+        width: 100%;
+        border-radius: 5px;
+        -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+        box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+        padding: 9px;
+        position: relative;
+
+        .editButton {
+          height: 45px;
+          width: 75px;
+          display: flex;
+          align-items: center;
+          padding: 15px;
+          border-radius: 10px;
+          margin-left: 90%;
+          cursor: pointer;
+          background: linear-gradient(to right, #197391, #0f9eea);
+
+          .icon {
+            font-size: 18px;
+            color: #ffffff;
+          }
+
+          span {
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-left: 10px;
+          }
+        }
+
+        .item {
+          gap: 20px;
+          padding: 5%;
+          // background-color: #0f9eea;
+
+          .itemImg {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            object-fit: cover;
+          }
+
+          .details {
+            .itemTitle {
+              margin-bottom: 10px;
+              color: #000000;
+            }
+
+            .detailItem {
+              margin-bottom: 10px;
+              font-size: 14px;
+
+              .itemKey {
+                font-weight: bold;
+                color: gray;
+                margin-right: 5px;
+              }
+
+              .itemValue {
+                font-weight: 300;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .bottom {
+      -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+      box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+      padding: 20px;
+      margin: 10px 20px;
+    }
+
+    .title {
+      font-size: 30px;
+      text-align: center;
+      font-weight: bold;
+      color: rgb(0, 0, 0);
+      margin-top: 2%;
+      margin-bottom: 7px;
+    }
+  }
+}
