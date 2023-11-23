@@ -16,7 +16,7 @@ import AlertTitle from "@mui/material/AlertTitle";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
-import customAvatarImage from "../../modules/image/rllogo.png";
+import customAvatarImage from "../../app/components/assets/image/rllogo.png";
 import { makeStyles } from "@material-ui/core/styles";
 import { loginUser } from "../Store/UserSlice";
 import { setAuthToken, setUser } from "../Store/UserSlice";

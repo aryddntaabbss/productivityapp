@@ -3,7 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import DescriptionIcon from "@mui/icons-material/Description";
 import ContactPageIcon from "@mui/icons-material/ContactPage";
-import Logo from "../../image/rllogo.png";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import Logo from "../../components/assets/image/rllogo.png";
 import "./sidebar.scss";
 
 const Sidebar = () => {
@@ -40,6 +41,13 @@ const Sidebar = () => {
             <li className={isLinkActive("/data/karyawan") ? "active" : ""}>
               <ContactPageIcon className="icon" />
               <span>Karyawan</span>
+            </li>
+          </Link>
+          <Link to="/manajemen-user" style={{ textDecoration: "none" }}>
+            <p className="title">Manajemen</p>
+            <li className={isLinkActive("/manajemen-user") ? "active" : ""}>
+              <PeopleAltIcon className="icon" />
+              <span>Kelola User</span>
             </li>
           </Link>
         </ul>

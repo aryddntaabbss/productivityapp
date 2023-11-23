@@ -1,8 +1,8 @@
 import "./manajemen.scss";
-import Search from "../../modules/components/search/Search";
-import Sidebar from "../../modules/components/sidebar/Sidebar";
-import Navbar from "../../modules/components/navbar/Navbar";
-import Datakaryawan from "../../modules/components/karyawan/Datakaryawan";
+import Search from "../../components/search/Search";
+import Sidebar from "../../components/sidebar/Sidebar";
+import Navbar from "../../components/navbar/Navbar";
+import Datauser from "../../components/manajemen/Manajemen";
 
 const List = () => {
   return (
@@ -10,11 +10,11 @@ const List = () => {
       <Sidebar />
       <div className="listContainer">
         <Navbar />
-        <h1 className="listTitle">List Karyawan</h1>
+        <h1 className="listTitle">Manajemen User</h1>
         <div className="searchCrew">
           <Search />
         </div>
-        <Datakaryawan />
+        <Datauser />
       </div>
     </div>
   );

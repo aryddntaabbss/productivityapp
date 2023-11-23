@@ -1,6 +1,6 @@
-import "./datatable.scss";
+import "./manajemen.scss";
 import { DataGrid } from "@mui/x-data-grid";
-import { userColumns, userRows } from "../datatable";
+import { userColumns, userRows } from "../../pages/manajemen_user/detailuser";
 import { useState } from "react";
 
 const Datatable = () => {

@@ -1,7 +1,7 @@
 import "./dashboard.scss";
-import Sidebar from "../../modules/components/sidebar/Sidebar";
-import Navbar from "../../modules/components/navbar/Navbar";
-import Widget from "../../modules/components/widget/Widget";
+import Sidebar from "../../components/sidebar/Sidebar";
+import Navbar from "../../components/navbar/Navbar";
+import Widget from "../../components/widget/Widget";
 
 const Dashboard = () => {
   return (
