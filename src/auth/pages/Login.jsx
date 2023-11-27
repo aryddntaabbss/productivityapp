@@ -18,8 +18,8 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import customAvatarImage from "../../app/components/assets/image/rllogo.png";
 import { makeStyles } from "@material-ui/core/styles";
-import { loginUser } from "../Store/UserSlice";
-import { setAuthToken, setUser } from "../Store/UserSlice";
+import { loginUser, setAuthToken, setUser } from "../Store/UserSlice";
+
 
 const useStyles = makeStyles( ( theme ) => ( {
   root: {
@@ -165,15 +165,9 @@ export const Login = () =>
 
       if ( result.payload )
       {
-        dispatch( setUser( result.payload ) );
-        dispatch( setAuthToken( result.payload.jwtToken ) );
-
-        // Save user data to local storage
+        // Simpan data pengguna ke local storage
         localStorage.setItem( "userData", JSON.stringify( result.payload ) );
-
-        setEmail( "" );
-        setPassword( "" );
-        setShowAlert( false );
+        // Redirect to home page or perform other actions after successful login
         navigate( "/" );
       } else
       {
@@ -191,6 +185,7 @@ export const Login = () =>
       handleOpenModal();
     }
   };
+
 
 
   const classes = useStyles();
@@ -211,7 +206,6 @@ export const Login = () =>
       navigate( "/" );
     }
   }, [ isAuthenticated, navigate, dispatch ] );
-
 
   return (
     <Grid container className={ classes.root }>

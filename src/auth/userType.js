@@ -2,7 +2,6 @@
 export const USER_TYPES = {
   ADMIN: "Admin",
   MANAGER: "Manager",
-  STAFF: "Staff",
 };
 
 // Fungsi untuk mendapatkan tipe akun pengguna dari penyimpanan lokal (localStorage)
