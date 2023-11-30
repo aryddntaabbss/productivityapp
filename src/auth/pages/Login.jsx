@@ -20,8 +20,7 @@ import customAvatarImage from "../../app/components/assets/image/rllogo.png";
 import { makeStyles } from "@material-ui/core/styles";
 import { loginUser, setAuthToken, setUser } from "../Store/UserSlice";
 
-
-const useStyles = makeStyles( ( theme ) => ( {
+const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     justifyContent: "center",
@@ -34,7 +33,7 @@ const useStyles = makeStyles( ( theme ) => ( {
     // display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: theme.spacing( 2 ),
+    padding: theme.spacing(2),
     borderRadius: "10px",
   },
   iconContainer: {
@@ -109,48 +108,41 @@ const useStyles = makeStyles( ( theme ) => ( {
     background: "linear-gradient(to right,  #197391, #0F9EEA)",
     color: "#ffffff",
   },
-} ) );
+}));
 
-
-export const Login = () =>
-{
-  const [ email, setEmail ] = useState( "" );
-  const [ password, setPassword ] = useState( "" );
-  const [ showPassword, setShowPassword ] = useState( false );
-  const [ showAlert, setShowAlert ] = useState( false );
-  const [ alertSeverity, setAlertSeverity ] = useState( "warning" );
-  const [ alertMessage, setAlertMessage ] = useState( "" );
-  const [ setOpen ] = useState( false );
+export const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertSeverity, setAlertSeverity] = useState("warning");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [open, setOpen] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isAuthenticated = useSelector( ( state ) => state.user.isAuthenticated );
-  const isLoading = useSelector( ( state ) => state.user.loading );
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  const isLoading = useSelector((state) => state.user.loading);
 
-  const handleTogglePasswordVisibility = () =>
-  {
-    setShowPassword( !showPassword );
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
-  const handleOpenModal = () =>
-  {
-    setOpen( true );
+  const handleOpenModal = () => {
+    setOpen(true);
   };
 
-  const handleClose = () =>
-  {
-    setOpen( false );
+  const handleClose = () => {
+    setOpen(false);
   };
 
-  const handleSubmit = async ( e ) =>
-  {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if ( !email || !password )
-    {
-      setAlertSeverity( "warning" );
-      setAlertMessage( "Email dan Password harus diisi!" );
-      setShowAlert( true );
+    if (!email || !password) {
+      setAlertSeverity("warning");
+      setAlertMessage("Email dan Password harus diisi!");
+      setShowAlert(true);
       return;
     }
 
@@ -159,78 +151,74 @@ export const Login = () =>
       password,
     };
 
-    try
-    {
-      const result = await dispatch( loginUser( userCredentials ) );
+    try {
+      const result = await dispatch(loginUser(userCredentials));
 
-      if ( result.payload )
-      {
-        // Simpan data pengguna ke local storage
-        localStorage.setItem( "userData", JSON.stringify( result.payload ) );
-        // Redirect to home page or perform other actions after successful login
-        navigate( "/" );
-      } else
-      {
-        setAlertSeverity( "error" );
-        setAlertMessage( "Email atau password salah!" );
-        setShowAlert( true );
+      if (result.payload) {
+        localStorage.setItem("userData", JSON.stringify(result.payload));
+      } else {
+        setAlertSeverity("error");
+        if (result.error && result.error.message === "User not found") {
+          setAlertMessage(
+            "Akun tidak ditemukan. Silakan cek kembali email dan password Anda."
+          );
+        } else {
+          setAlertMessage("Email atau password salah!");
+        }
+        setShowAlert(true);
         handleOpenModal();
       }
-    } catch ( error )
-    {
-      console.error( "Error selama login:", error );
-      setAlertSeverity( "error" );
-      setAlertMessage( "Terjadi kesalahan. Silakan coba lagi nanti." );
-      setShowAlert( true );
+    } catch (error) {
+      console.error("Error selama login:", error);
+      setAlertSeverity("error");
+      setAlertMessage("Terjadi kesalahan. Silakan coba lagi nanti.");
+      setShowAlert(true);
       handleOpenModal();
     }
   };
 
-
-
   const classes = useStyles();
 
-  useEffect( () =>
-  {
-    const storedUserData = localStorage.getItem( "userData" );
+  useEffect(() => {
+    const storedUserData = localStorage.getItem("userData");
 
-    if ( storedUserData )
-    {
-      const parsedUserData = JSON.parse( storedUserData );
-      dispatch( setUser( parsedUserData ) );
-      dispatch( setAuthToken( parsedUserData.jwtToken ) );
+    if (storedUserData) {
+      const parsedUserData = JSON.parse(storedUserData);
+      dispatch(setUser(parsedUserData));
+      dispatch(setAuthToken(parsedUserData.jwtToken));
     }
 
-    if ( isAuthenticated )
-    {
-      navigate( "/" );
+    if (isAuthenticated) {
+      navigate("/");
+    } else {
+      navigate("/login");
     }
-  }, [ isAuthenticated, navigate, dispatch ] );
+  }, [isAuthenticated, navigate, dispatch]);
 
   return (
-    <Grid container className={ classes.root }>
+    <Grid container className={classes.root}>
       <CssBaseline />
       <Grid
-        className={ classes.card }
+        className={classes.card}
         item
-        xs={ 12 }
-        md={ 4 }
-        component={ Paper }
-        elevation={ 6 }
+        xs={12}
+        md={4}
+        component={Paper}
+        elevation={6}
       >
-        <div className={ classes.paper }>
-          <div className={ classes.iconContainer }>
-            <div className={ classes.icon }>
-              <img src={ customAvatarImage } alt="Avatar" />
+        <div className={classes.paper}>
+          <div className={classes.iconContainer}>
+            <div className={classes.icon}>
+              <img src={customAvatarImage} alt="Avatar" />
             </div>
           </div>
-          <Typography component="h1" variant="h3" className={ classes.paragraph }>
+          <Typography component="h1" variant="h3" className={classes.paragraph}>
             Welcome back to <a href="/login">Productivity Tracker App</a>
           </Typography>
-          <Typography component="h1" variant="h3" className={ classes.title }>
+          <Typography component="h1" variant="h3" className={classes.title}>
             Login
           </Typography>
-          <form className={ classes.form } noValidate onSubmit={ handleSubmit }>
+          <form className={classes.form} noValidate onSubmit={handleSubmit}>
             <TextField
               variant="outlined"
               margin="normal"
@@ -239,8 +227,8 @@ export const Login = () =>
               id="email"
               name="email"
               label="Email Address"
-              value={ email }
-              onChange={ ( e ) => setEmail( e.target.value ) }
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               variant="outlined"
@@ -250,59 +238,65 @@ export const Login = () =>
               id="password"
               name="password"
               label="Password"
-              type={ showPassword ? "text" : "password" }
-              value={ password }
-              onChange={ ( e ) => setPassword( e.target.value ) }
-              className={ classes.passwordField }
-              InputProps={ {
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={classes.passwordField}
+              InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
                       edge="end"
                       aria-label="toggle password visibility"
-                      onClick={ handleTogglePasswordVisibility }
+                      onClick={handleTogglePasswordVisibility}
                     >
-                      { showPassword ? <Visibility /> : <VisibilityOff /> }
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
                 ),
-              } }
+              }}
             />
-            <div className={ classes.forgot }>
-              <a href="#forgot-password">Forgot Password?</a>
+            <div className={classes.forgot}>
+              <a href="/email-verification">Forgot Password?</a>
             </div>
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              className={ classes.submit }
+              className={classes.submit}
             >
               Login
             </Button>
           </form>
-          <Modal
-            open={ showAlert }
-            onClose={ () => setShowAlert( false ) }
-            className={ classes.modal }
-          >
-            <div className={ classes.modal }>
-              <Alert severity={ alertSeverity } onClose={ () => setShowAlert( false ) }>
-                <AlertTitle>
-                  { alertSeverity === "warning" ? "Peringatan" : "Error" }
-                </AlertTitle>
-                { alertMessage }
-              </Alert>
-            </div>
-          </Modal>
+          {showAlert && (
+            <Modal
+              open={true}
+              onClose={() => setShowAlert(false)}
+              className={classes.modal}
+            >
+              <div className={classes.modal}>
+                <Alert
+                  severity={alertSeverity}
+                  onClose={() => setShowAlert(false)}
+                >
+                  <AlertTitle>
+                    {alertSeverity === "warning" ? "Peringatan" : "Error"}
+                  </AlertTitle>
+                  {alertMessage}
+                </Alert>
+              </div>
+            </Modal>
+          )}
 
-          <Backdrop
-            sx={ { color: "#fff", zIndex: ( theme ) => theme.zIndex.drawer + 1 } }
-            open={ isLoading } /* Hanya tampilkan Backdrop saat sedang loading */
-            onClick={ handleClose }
-          >
-            <CircularProgress color="inherit" />
-          </Backdrop>
-
+          {isLoading && (
+            <Backdrop
+              sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+              open={true}
+              onClick={handleClose}
+            >
+              <CircularProgress color="inherit" />
+            </Backdrop>
+          )}
         </div>
       </Grid>
     </Grid>

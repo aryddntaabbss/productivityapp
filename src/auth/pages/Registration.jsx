@@ -1,7 +1,4 @@
-
-
-
-import React, { useState, } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import swal from "sweetalert";
 import Button from "@material-ui/core/Button";
@@ -22,7 +19,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import customAvatarImage from "../../modules/image/rllogo.png";
 
 // Style
-const useStyles = makeStyles( ( theme ) => ( {
+const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     justifyContent: "center",
@@ -111,113 +108,98 @@ const useStyles = makeStyles( ( theme ) => ( {
     background: "linear-gradient(to right,  #197391, #0F9EEA)",
     color: "#ffff",
   },
-} ) );
+}));
 
-async function registerUser ( credentials )
-{
-  try
-  {
+async function registerUser(credentials) {
+  try {
     const response = await axios.post(
       "https://protracker.azurewebsites.net/api/auth/register",
       credentials
     );
 
-    if ( !response.data.ok )
-    {
-      throw new Error( "Registrasi gagal" );
+    if (!response.data.ok) {
+      throw new Error("Registrasi gagal");
     }
 
     return response.data;
-  } catch ( error )
-  {
-    console.error( "Error saat mendaftarkan pengguna:", error.message );
+  } catch (error) {
+    console.error("Error saat mendaftarkan pengguna:", error.message);
     throw error;
   }
 }
 
-export default function Register ()
-{
+export default function Register() {
   const classes = useStyles();
-  const [ email, setEmail ] = useState( "" );
-  const [ username, setUsername ] = useState( "" );
-  const [ userType, setUserType ] = useState( "" );
-  const [ password, setPassword ] = useState( "" );
-  const [ showPassword, setShowPassword ] = useState( false );
-  const [ confirmPassword, setConfirmPassword ] = useState( "" );
-  const [ showConfirmPassword, setShowConfirmPassword ] = useState( false );
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [userType, setUserType] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleTogglePasswordVisibility = ( field ) =>
-  {
-    if ( field === "password" )
-    {
-      setShowPassword( !showPassword );
-    } else if ( field === "confirmPassword" )
-    {
-      setShowConfirmPassword( !showConfirmPassword );
+  const handleTogglePasswordVisibility = (field) => {
+    if (field === "password") {
+      setShowPassword(!showPassword);
+    } else if (field === "confirmPassword") {
+      setShowConfirmPassword(!showConfirmPassword);
     }
   };
 
-  const handleSubmit = async ( e ) =>
-  {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validasi agar email dan username tidak kosong
-    if ( !email || !username )
-    {
-      console.error( "Email dan username harus diisi" );
+    if (!email || !username) {
+      console.error("Email dan username harus diisi");
       return;
     }
 
-    try
-    {
-      const response = await registerUser( {
+    try {
+      const response = await registerUser({
         email,
         username,
         userType,
         password,
         confirmPassword,
-      } );
+      });
 
-      if ( "accessToken" in response )
-      {
-        swal( "Success", response.message, "success", {
+      if ("accessToken" in response) {
+        swal("Success", response.message, "success", {
           buttons: false,
           timer: 2000,
-        } ).then( ( value ) =>
-        {
-          localStorage.setItem( "accessToken", response.accessToken );
-          localStorage.setItem( "user", JSON.stringify( response.user ) );
+        }).then((value) => {
+          localStorage.setItem("accessToken", response.accessToken);
+          localStorage.setItem("user", JSON.stringify(response.user));
           window.location.href = "/login";
-        } );
-      } else
-      {
-        swal( "Failed", response.message || "Registrasi gagal.", "error" );
+        });
+      } else {
+        swal("Failed", response.message || "Registrasi gagal.", "error");
       }
-    } catch ( error )
-    {
-      console.error( "Error during registration:", error );
-      swal( "Error", "Registrasi gagal. Silakan coba lagi nanti.", "error" );
+    } catch (error) {
+      console.error("Error during registration:", error);
+      swal("Error", "Registrasi gagal. Silakan coba lagi nanti.", "error");
     }
   };
 
   return (
-    <Grid container className={ classes.root }>
+    <Grid container className={classes.root}>
       <CssBaseline />
-      <Grid item xs={ 12 } md={ 5 } component={ Paper } elevation={ 6 }>
-        <div className={ classes.paper }>
-          <div className={ classes.iconContainer }>
-            <div className={ classes.icon }>
-              <img src={ customAvatarImage } alt="Avatar" />
+      <Grid item xs={12} md={5} component={Paper} elevation={6}>
+        <div className={classes.paper}>
+          <div className={classes.iconContainer}>
+            <div className={classes.icon}>
+              <img src={customAvatarImage} alt="Avatar" />
             </div>
           </div>
-          <Typography component="h1" variant="h3" className={ classes.paragraph }>
-            Please Create Account for{ " " }
+          <Typography component="h1" variant="h3" className={classes.paragraph}>
+            Please Create Account for{" "}
             <a href="/register">Productivity Tracker App</a>
           </Typography>
-          <Typography component="h1" variant="h3" className={ classes.title }>
+          <Typography component="h1" variant="h3" className={classes.title}>
             Register
           </Typography>
-          <form className={ classes.form } noValidate onSubmit={ handleSubmit }>
+          <form className={classes.form} noValidate onSubmit={handleSubmit}>
             <TextField
               variant="outlined"
               margin="normal"
@@ -226,7 +208,7 @@ export default function Register ()
               id="email"
               name="email"
               label="Email Address"
-              onChange={ ( e ) => setEmail( e.target.value ) }
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               variant="outlined"
@@ -236,15 +218,15 @@ export default function Register ()
               id="username"
               name="username"
               label="Username"
-              onChange={ ( e ) => setUsername( e.target.value ) }
+              onChange={(e) => setUsername(e.target.value)}
             />
-            <FormControl variant="outlined" className={ classes.formControl }>
+            <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel id="user-type-label">User Type</InputLabel>
               <Select
                 labelId="user-type-label"
                 id="user-type"
-                value={ userType }
-                onChange={ ( e ) => setUserType( e.target.value ) }
+                value={userType}
+                onChange={(e) => setUserType(e.target.value)}
                 label="User Type"
               >
                 <MenuItem value="Admin">Admin</MenuItem>
@@ -259,25 +241,24 @@ export default function Register ()
               id="password"
               name="password"
               label="Password"
-              type={ showPassword ? "text" : "password" }
-              value={ password }
-              onChange={ ( e ) => setPassword( e.target.value ) }
-              className={ classes.passwordField }
-              InputProps={ {
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={classes.passwordField}
+              InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
                       edge="end"
                       aria-label="toggle password visibility"
-                      onClick={ () => handleTogglePasswordVisibility( "password" ) }
+                      onClick={() => handleTogglePasswordVisibility("password")}
                     >
-                      { showPassword ? <Visibility /> : <VisibilityOff /> }
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
                 ),
-              } }
+              }}
             />
-
             <TextField
               variant="outlined"
               margin="normal"
@@ -286,37 +267,37 @@ export default function Register ()
               id="confirmPassword"
               name="confirmPassword"
               label="Confirm Password"
-              type={ showConfirmPassword ? "text" : "password" }
-              value={ confirmPassword }
-              onChange={ ( e ) => setConfirmPassword( e.target.value ) }
-              className={ classes.passwordField }
-              InputProps={ {
+              type={showConfirmPassword ? "text" : "password"}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className={classes.passwordField}
+              InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
                       edge="end"
                       aria-label="toggle password visibility"
-                      onClick={ () =>
-                        handleTogglePasswordVisibility( "confirmPassword" )
+                      onClick={() =>
+                        handleTogglePasswordVisibility("confirmPassword")
                       }
                     >
-                      { showConfirmPassword ? <Visibility /> : <VisibilityOff /> }
+                      {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
                 ),
-              } }
+              }}
             />
 
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              className={ classes.submit }
+              className={classes.submit}
             >
               Agree and Register
             </Button>
 
-            <div className={ classes.login }>
+            <div className={classes.login}>
               Have an account?
               <a href="/login"> Login now</a>
             </div>

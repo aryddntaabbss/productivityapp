@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { LOGIN_URL, LOGOUT_URL } from "../../app/authCrud";
+import { LOGIN_URL, LOGOUT_URL, RESETPASS_URL } from "../../app/authCrud";
 import axios from "axios";
 
 const getUserTypeFromLocalStorage = () =>
@@ -57,6 +57,30 @@ export const loginUser = createAsyncThunk(
     }
 );
 
+export const resetPassword = createAsyncThunk(
+    "auth/resetPassword",
+    async ( { email, token, newPassword, confirmPassword }, { rejectWithValue } ) =>
+    {
+        try
+        {
+            const response = await axios.post( RESETPASS_URL, {
+                email: email,
+                token: token,
+                newPassword: newPassword,
+                confirmPassword: confirmPassword,
+            } );
+
+            return response.data;
+        } catch ( error )
+        {
+            return rejectWithValue( error.message );
+        }
+    }
+);
+
+
+
+export const selectToken = ( state ) => state.user.user.data.token;
 
 export const logoutUser = createAsyncThunk(
     "auth/logout",
@@ -90,7 +114,9 @@ const userSlice = createSlice( {
         isAuthenticated: false,
         authToken: localStorage.getItem( "token" ) || null,
         userType: null,
+        resetPasswordStatus: "idle", // idle | pending | fulfilled | rejected
     },
+
     reducers: {
         setUser: ( state, action ) =>
         {
@@ -128,7 +154,6 @@ const userSlice = createSlice( {
             {
                 state.loading = false;
                 state.user = null;
-                console.error( "Error during login:", action.error.message );
 
                 if ( action.error.message === "Request failed with status code 401" )
                 {
@@ -161,6 +186,19 @@ const userSlice = createSlice( {
                 state.error =
                     "An error occurred during logout. Please try again later.";
                 state.isAuthenticated = false;
+            } )
+            .addCase( resetPassword.pending, ( state ) =>
+            {
+                state.resetPasswordStatus = "pending";
+            } )
+            .addCase( resetPassword.fulfilled, ( state, action ) =>
+            {
+                state.resetPasswordStatus = "fulfilled";
+
+            } )
+            .addCase( resetPassword.rejected, ( state, action ) =>
+            {
+                state.resetPasswordStatus = "rejected";
             } );
     },
 } );

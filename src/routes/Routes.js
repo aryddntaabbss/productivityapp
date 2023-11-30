@@ -2,6 +2,10 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Login from '../auth/pages/Login';
+import EmailVerification from '../auth/pages/Forgot-Password/EmailVerification';
+import OtpVerification from '../auth/pages/Forgot-Password/OtpVerification';
+import ResetPassword from '../auth/pages/Forgot-Password/ResetPassword';
+import Success from './../auth/pages/Forgot-Password/Success';
 import Dashboard from '../app/pages/dashboard/Dashboard';
 import Projek from '../app/pages/data_project/Project';
 import Karyawan from '../app/pages/data_karyawan/Karyawan';
@@ -24,6 +28,11 @@ const AppRoutes = () =>
         <Router>
             <Routes>
                 <Route path="/login" element={ <Login /> } />
+                <Route path="/email-verification" element={ <EmailVerification /> } />
+                <Route path="/otp-verification" element={ <OtpVerification /> } />
+                <Route path="/reset-password" element={ <ResetPassword /> } />
+                <Route path="/success" element={ <Success /> } />
+
                 <Route
                     path="/"
                     element={ <PrivateRoute element={ <Dashboard /> } roles={ [ 'admin', 'manager' ] } /> }
