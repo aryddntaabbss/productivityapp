@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchUserType } from "../auth/Store/UserSlice";
+import { fetchUserType } from "../store/UserSlice";
 
 const PrivateRoute = ( { element } ) =>
 {

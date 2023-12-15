@@ -1,18 +1,20 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import Login from '../auth/pages/Login';
-import EmailVerification from '../auth/pages/Forgot-Password/EmailVerification';
-import OtpVerification from '../auth/pages/Forgot-Password/OtpVerification';
-import ResetPassword from '../auth/pages/Forgot-Password/ResetPassword';
-import Success from './../auth/pages/Forgot-Password/Success';
-import Dashboard from '../app/pages/dashboard/Dashboard';
-import Projek from '../app/pages/data_project/Project';
-import Karyawan from '../app/pages/data_karyawan/Karyawan';
-import Manajemen from '../app/pages/manajemen_user/Manajemen';
-import Profil from '../app/components/profile/Profile';
+import Login from '../pages/login/Login';
+import EmailVerification from '../pages/forgotPassword/EmailVerification';
+import OtpVerification from '../pages/forgotPassword/OtpVerification';
+import ResetPassword from '../pages/forgotPassword/ResetPassword';
+import Success from '../pages/forgotPassword/Success';
+import Dashboard from '../pages/dashboard/Dashboard';
+import Projek from '../pages/projectManagement/projectManagement';
+import Karyawan from '../pages/userManagement/listUser';
+import Manajemen from '../pages/userManagement/userManagement';
+import AddUser from '../pages/userManagement/detail/AddUser';
+import Add from '../pages/userManagement/add';
+import Profil from '../components/ui/profile/Profile';
 import PrivateRoute from './PrivateRoute';
-import { fetchUserType } from '../auth/Store/UserSlice';
+import { fetchUserType } from '../store/UserSlice';
 
 
 const AppRoutes = () =>
@@ -33,6 +35,10 @@ const AppRoutes = () =>
                 <Route path="/reset-password" element={ <ResetPassword /> } />
                 <Route path="/success" element={ <Success /> } />
 
+                <Route path="/adduser" element={ <AddUser /> } />
+                <Route path="/add" element={ <Add /> } />
+
+
                 <Route
                     path="/"
                     element={ <PrivateRoute element={ <Dashboard /> } roles={ [ 'admin', 'manager' ] } /> }
@@ -49,10 +55,15 @@ const AppRoutes = () =>
                     path="/manajemen-user"
                     element={ <PrivateRoute element={ <Manajemen /> } roles={ [ 'admin' ] } /> }
                 />
+                {/* <Route
+                    path="/add-user"
+                    element={ <PrivateRoute element={ <Add /> } roles={ [ 'admin' ] } /> }
+                /> */}
                 <Route
                     path="/profile"
                     element={ <PrivateRoute element={ <Profil /> } roles={ [ 'admin', 'manager' ] } /> }
                 />
+
             </Routes>
         </Router>
     );

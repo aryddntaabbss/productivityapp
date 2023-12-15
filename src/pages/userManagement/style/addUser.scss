@@ -1,0 +1,55 @@
+.paragraph p {
+  text-decoration: none;
+  font-size: 30px;
+  font-weight: bold;
+  color: #0f9eea;
+  font-family: "Playfair Display";
+}
+
+.title h3 {
+  font-size: 40px;
+  font-weight: bold;
+  color: #000;
+  text-align: left;
+  font-family: "Playfair Display";
+  margin-top: 10px;
+}
+
+.form {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.formControl {
+  width: 100%;
+  margin-top: 40px;
+}
+
+.forgot {
+  font-size: 14px;
+  color: #000;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  & a {
+    text-align: right;
+    text-decoration: none;
+    color: #0f9eea;
+    font-weight: bold;
+  }
+}
+
+.adduser {
+  margin-right: 24px;
+  background: linear-gradient(to right, #197391, #0f9eea);
+  width: 80px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

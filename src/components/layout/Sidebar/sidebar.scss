@@ -1,0 +1,89 @@
+.sidebar {
+  padding-left: 35px;
+  padding-right: 35px;
+  flex: 1;
+  min-height: 100vh;
+  background-color: white;
+
+  .top {
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+
+    img {
+      width: 150px;
+      height: auto;
+    }
+  }
+
+  .center {
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      .title {
+        font-size: 13px;
+        font-weight: bold;
+        color: #999;
+        margin-top: 15px;
+        margin-bottom: 5px;
+      }
+
+      li {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 5px;
+        cursor: pointer;
+
+        &:hover {
+          // Gaya hover untuk semua link, kecuali yang aktif
+          background: linear-gradient(to right, #197391, #0f9eea);
+
+          .icon {
+            font-size: 18px;
+            color: #ffffff;
+          }
+
+          span {
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-left: 10px;
+          }
+        }
+
+        .icon {
+          font-size: 18px;
+          color: #000000;
+        }
+
+        span {
+          font-size: 13px;
+          font-weight: 600;
+          color: #000000;
+          margin-left: 10px;
+        }
+
+        &.active {
+          // Gaya untuk link aktif
+          background: linear-gradient(to right, #197391, #0f9eea);
+
+          .icon {
+            font-size: 18px;
+            color: #ffffff;
+          }
+
+          span {
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-left: 10px;
+          }
+        }
+      }
+    }
+  }
+}
