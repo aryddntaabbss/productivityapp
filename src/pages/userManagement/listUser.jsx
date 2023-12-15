@@ -69,7 +69,6 @@ const ListUser = () => {
   const fetchData = async () => {
     try {
       const employeeRows = await fetchUserRows();
-      console.log("Test Row : ", employeeRows);
       setRows(employeeRows);
     } catch (error) {
       console.error("Error fetching employee data:", error);
@@ -133,7 +132,7 @@ const ListUser = () => {
               <DataGrid
                 rows={filteredRows}
                 columns={userColumns}
-                pageSize={10}
+                // pageSize={10}
               />
             </div>
           )}

@@ -1,51 +1,74 @@
-.paragraph p {
-  text-decoration: none;
-  font-size: 30px;
-  font-weight: bold;
-  color: #0f9eea;
-  font-family: "Playfair Display";
-}
-
-.title h3 {
-  font-size: 40px;
-  font-weight: bold;
-  color: #000;
-  text-align: left;
-  font-family: "Playfair Display";
-  margin-top: 10px;
-}
-
-.form {
-  width: 70%;
+.list {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.formControl {
   width: 100%;
-  margin-top: 40px;
-}
+  background-color: #e3e3e3;
 
-.forgot {
-  font-size: 14px;
-  color: #000;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  & a {
-    text-align: right;
-    text-decoration: none;
-    color: #0f9eea;
+  .Container {
+    flex: 6;
+  }
+
+  .listTitle {
+    width: 100%;
+    font-size: 30px;
     font-weight: bold;
+    margin-top: 2%;
+    display: flex;
+    margin: 3%;
   }
 }
 
-.adduser {
-  margin-right: 24px;
+.card {
+  margin: auto;
+  background-color: #ffffff;
+  width: 95%;
+  height: 100%;
+  padding: 10%;
+  padding: 10px;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.forms {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+
+  .form-card {
+    width: 60%;
+    height: 100%;
+    align-items: center;
+    margin: auto;
+  }
+
+  .form1 {
+    margin: 5px;
+  }
+
+  .form2 {
+    margin: 5px;
+  }
+
+  .formControl {
+    width: 100%;
+    margin-top: 10px;
+    // margin-bottom: 30px;
+  }
+}
+
+.button {
+  margin-top: 5%;
+  margin-bottom: 5%;
+  width: 88%;
+}
+.addBtn {
   background: linear-gradient(to right, #197391, #0f9eea);
-  width: 80px;
-  font-weight: bold;
-  color: #ffffff;
+  & p {
+    margin: 5px;
+    font-weight: bold;
+    color: #ffffff;
+  }
 }
 
 .modal {

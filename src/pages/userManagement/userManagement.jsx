@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import Search from "../../components/ui/search/Search";
 import Sidebar from "../../components/layout/Sidebar/Sidebar";
 import Navbar from "../../components/layout/Navbar/Navbar";
+import { useNavigate } from "react-router-dom";
 import "./style/userManagement.scss";
 
 const userColumns = [
@@ -24,6 +25,12 @@ const UserManagement = () => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+
+  const navigate = useNavigate();
+
+  const navigateToAddUser = () => {
+    navigate("/add");
+  };
 
   const handleEdit = (id) => () => {
     setRows({ ...rows, [id]: { mode: GridRowModes.Edit } });
@@ -97,7 +104,6 @@ const UserManagement = () => {
   const fetchData = async () => {
     try {
       const employeeRows = await fetchUserRows();
-      console.log("Test Row : ", employeeRows);
       setRows(employeeRows);
     } catch (error) {
       console.error("Error fetching employee data:", error);
@@ -146,8 +152,12 @@ const UserManagement = () => {
           </Grid>
           <Grid item xs={3} md={2}>
             <div className="head">
-              <Button variant="contained" href="/adduser" className="addBtn">
-                + Add
+              <Button
+                variant="contained"
+                onClick={navigateToAddUser}
+                className="addBtn"
+              >
+                add
               </Button>
             </div>
           </Grid>
@@ -168,7 +178,7 @@ const UserManagement = () => {
               <DataGrid
                 rows={filteredRows}
                 columns={userColumns.concat(actionColumn)}
-                pageSize={10}
+                // pageSize={10}
               />
             </div>
           )}

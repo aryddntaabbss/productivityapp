@@ -8,58 +8,60 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import customAvatarImage from "../../../assets/rllogo.png";
 import "./sidebar.scss";
 
-const Sidebar = () =>
-{
+const Sidebar = () => {
   const location = useLocation();
 
-  const isLinkActive = ( path ) =>
-  {
+  const isLinkActive = (path) => {
     return location.pathname === path;
   };
 
   // Mengambil userType dari localStorage
-  const userType = useSelector( ( state ) => state.user.userType );
+  const userType = useSelector((state) => state.user.userType);
 
   return (
     <div className="sidebar">
       <div className="top">
-        <Link to="/" style={ { textDecoration: "none" } }>
+        <Link to="/" style={{ textDecoration: "none" }}>
           <div>
-            <img src={ customAvatarImage } alt="Avatar" />
+            <img src={customAvatarImage} alt="Avatar" />
           </div>
         </Link>
       </div>
       <div className="center">
         <ul>
-          <Link to="/" style={ { textDecoration: "none" } }>
+          <Link to="/" style={{ textDecoration: "none" }}>
             <p className="title">Dashboard</p>
-            <li className={ isLinkActive( "/" ) ? "active" : "" }>
+            <li className={isLinkActive("/") ? "active" : ""}>
               <DashboardIcon className="icon" />
               <span>Dashboard</span>
             </li>
           </Link>
-          <Link to="/data/projek" style={ { textDecoration: "none" } }>
+          <Link to="/data/projek" style={{ textDecoration: "none" }}>
             <p className="title">Reports</p>
-            <li className={ isLinkActive( "/data/projek" ) ? "active" : "" }>
+            <li className={isLinkActive("/data/projek") ? "active" : ""}>
               <DescriptionIcon className="icon" />
               <span>Projek</span>
             </li>
           </Link>
-          <Link to="/data/karyawan" style={ { textDecoration: "none" } }>
-            <li className={ isLinkActive( "/data/karyawan" ) ? "active" : "" }>
+          <Link to="/data/karyawan" style={{ textDecoration: "none" }}>
+            <li className={isLinkActive("/data/karyawan") ? "active" : ""}>
               <ContactPageIcon className="icon" />
               <span>Karyawan</span>
             </li>
           </Link>
-          { userType === "Admin" && (
-            <Link to="/manajemen-user" style={ { textDecoration: "none" } }>
+          {userType === "Admin" && (
+            <Link to="/manajemen-user" style={{ textDecoration: "none" }}>
               <p className="title">Management</p>
-              <li className={ isLinkActive( "/manajemen-user" ) ? "active" : "" }>
+              <li
+                className={
+                  isLinkActive("/manajemen-user, /add") ? "active" : ""
+                }
+              >
                 <PeopleAltIcon className="icon" />
                 <span>Kelola User</span>
               </li>
             </Link>
-          ) }
+          )}
         </ul>
       </div>
     </div>

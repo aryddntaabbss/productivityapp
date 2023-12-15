@@ -69,7 +69,6 @@ const ProjectManagement = () => {
   const fetchData = async () => {
     try {
       const projectRows = await fetchProjectRows();
-      console.log("Test Row : ", projectRows);
       setRows(projectRows);
     } catch (error) {
       console.error("Error fetching project data:", error);
@@ -138,7 +137,7 @@ const ProjectManagement = () => {
               <DataGrid
                 rows={filteredRows}
                 columns={projectColumns}
-                pageSize={10}
+                // pageSize={10}
               />
             </div>
           )}

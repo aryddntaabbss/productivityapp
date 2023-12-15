@@ -11,7 +11,6 @@ import Projek from '../pages/projectManagement/projectManagement';
 import Karyawan from '../pages/userManagement/listUser';
 import Manajemen from '../pages/userManagement/userManagement';
 import AddUser from '../pages/userManagement/detail/AddUser';
-import Add from '../pages/userManagement/add';
 import Profil from '../components/ui/profile/Profile';
 import PrivateRoute from './PrivateRoute';
 import { fetchUserType } from '../store/UserSlice';
@@ -35,9 +34,6 @@ const AppRoutes = () =>
                 <Route path="/reset-password" element={ <ResetPassword /> } />
                 <Route path="/success" element={ <Success /> } />
 
-                <Route path="/adduser" element={ <AddUser /> } />
-                <Route path="/add" element={ <Add /> } />
-
 
                 <Route
                     path="/"
@@ -55,10 +51,10 @@ const AppRoutes = () =>
                     path="/manajemen-user"
                     element={ <PrivateRoute element={ <Manajemen /> } roles={ [ 'admin' ] } /> }
                 />
-                {/* <Route
-                    path="/add-user"
-                    element={ <PrivateRoute element={ <Add /> } roles={ [ 'admin' ] } /> }
-                /> */}
+                <Route
+                    path="/add"
+                    element={ <PrivateRoute element={ <AddUser /> } roles={ [ 'admin' ] } /> }
+                />
                 <Route
                     path="/profile"
                     element={ <PrivateRoute element={ <Profil /> } roles={ [ 'admin', 'manager' ] } /> }
