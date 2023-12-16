@@ -52,11 +52,7 @@ const Sidebar = () => {
           {userType === "Admin" && (
             <Link to="/manajemen-user" style={{ textDecoration: "none" }}>
               <p className="title">Management</p>
-              <li
-                className={
-                  isLinkActive("/manajemen-user, /add") ? "active" : ""
-                }
-              >
+              <li className={isLinkActive("/manajemen-user") ? "active" : ""}>
                 <PeopleAltIcon className="icon" />
                 <span>Kelola User</span>
               </li>

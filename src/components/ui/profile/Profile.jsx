@@ -9,7 +9,6 @@ const Single = () => {
       <div className="homeContainer">
         <Navbar />
         <div className="title">Profile</div>
-        <div className=""></div>
       </div>
     </div>
   );

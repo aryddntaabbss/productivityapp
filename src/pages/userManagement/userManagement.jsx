@@ -1,17 +1,18 @@
+import "./style/userManagement.scss";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Grid from "@material-ui/core/Grid";
-import { DataGrid, GridRowModes } from "@mui/x-data-grid";
-import { DASHBOARD_USER_URL } from "../../routes/authCrud";
+import swal from "sweetalert";
+import { DataGrid } from "@mui/x-data-grid";
+import { DASHBOARD_USER_URL, DELETE_USER_URL } from "../../routes/authCrud";
 import { useSelector } from "react-redux";
 import Search from "../../components/ui/search/Search";
 import Sidebar from "../../components/layout/Sidebar/Sidebar";
 import Navbar from "../../components/layout/Navbar/Navbar";
 import { useNavigate } from "react-router-dom";
-import "./style/userManagement.scss";
 
 const userColumns = [
   { field: "id", headerName: "ID", width: 120 },
@@ -25,19 +26,18 @@ const UserManagement = () => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-
   const navigate = useNavigate();
 
   const navigateToAddUser = () => {
     navigate("/add");
   };
 
-  const handleEdit = (id) => () => {
-    setRows({ ...rows, [id]: { mode: GridRowModes.Edit } });
-  };
-
-  const handleDelete = (id) => {
-    setRows(rows.filter((item) => item.id !== id));
+  const handleEdit = (id) => {
+    // Waiting
+    const updatedRows = rows.map((row) =>
+      row.id === id ? { ...row, editing: true } : row
+    );
+    setRows(updatedRows);
   };
 
   const actionColumn = [
@@ -56,7 +56,7 @@ const UserManagement = () => {
             </div>
             <div
               className="deleteButton"
-              onClick={() => handleDelete(params.row.id)}
+              onClick={() => handleDelete(params.row.name)}
             >
               <DeleteIcon />
             </div>
@@ -86,6 +86,7 @@ const UserManagement = () => {
         console.log("Data karyawan : ", employees.data);
         return [];
       }
+      console.log("data : ", employees.data);
 
       const employeeRows = employees.data.map((employee) => ({
         id: employee.id,
@@ -109,6 +110,33 @@ const UserManagement = () => {
       console.error("Error fetching employee data:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (userName) => {
+    try {
+      const response = await axios.delete(DELETE_USER_URL, {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+        params: {
+          name: `${userName}`,
+        },
+      });
+
+      if (response.data.code === 200) {
+        setRows(rows.filter((item) => item.name !== userName));
+        swal("Success", "Pengguna berhasil dihapus.", "success");
+      } else {
+        swal("Error", response.data || "Gagal menghapus pengguna.", "error");
+      }
+    } catch (error) {
+      console.error("Error during user deletion:", error);
+      swal(
+        "Error",
+        "Gagal menghapus pengguna. Silakan coba lagi nanti.",
+        "error"
+      );
     }
   };
 
@@ -178,7 +206,6 @@ const UserManagement = () => {
               <DataGrid
                 rows={filteredRows}
                 columns={userColumns.concat(actionColumn)}
-                // pageSize={10}
               />
             </div>
           )}
