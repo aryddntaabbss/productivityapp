@@ -2,20 +2,48 @@
   display: flex;
   background-color: #e3e3e3;
 
+  .profileDetails {
+    margin: 5%;
+  }
+
   .title {
+    width: 100%;
     font-size: 30px;
-    margin-left: 20px;
-    text-align: start;
     font-weight: bold;
-    color: rgb(0, 0, 0);
-    margin-top: 2%;
-    margin-bottom: 7px;
+    margin: 2%;
+    display: flex;
+    margin-top: 3%;
+  }
+
+  .img {
+    margin: 5%;
+    width: 90%;
+    align-items: center;
+  }
+
+  .card {
+    margin: auto;
+    background-color: #ffffff;
+    width: 95%;
+    height: auto;
+    padding: 10px;
+    align-items: center;
+    border-radius: 5px;
+  }
+
+  .field {
+    border: 2px solid #cdcdcd;
+    width: auto;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 10px 10px 0;
   }
 
   .item {
     gap: 20px;
     padding: 5%;
     background-color: #0f9eea;
+    border-radius: 5px;
 
     .itemImg {
       width: 150px;

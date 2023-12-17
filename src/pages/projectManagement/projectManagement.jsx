@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
+import Skeleton from "@mui/material/Skeleton";
 import Grid from "@material-ui/core/Grid";
 import { DASHBOARD_URL } from "../../routes/authCrud";
 import { useSelector } from "react-redux";
@@ -109,12 +110,9 @@ const ProjectManagement = () => {
       <div className="listContainer">
         <Navbar />
         <Grid container spacing={2}>
-          {/* Grid item pertama */}
           <Grid item xs={3} md={6}>
             <h1 className="listTitle">List Projek</h1>
           </Grid>
-
-          {/* Grid item kedua */}
           <Grid item xs={3} md={6}>
             <div className="searchCrew">
               <Search onSearch={handleSearch} />
@@ -124,7 +122,9 @@ const ProjectManagement = () => {
 
         <div className="datatable">
           {loading ? (
-            <p>Loading...</p>
+            <div style={{ height: 500, width: "100%" }}>
+              <Skeleton variant="rounded" height={500} animation="wave" />
+            </div>
           ) : (
             <div
               style={{
@@ -134,11 +134,7 @@ const ProjectManagement = () => {
                 borderRadius: "5px",
               }}
             >
-              <DataGrid
-                rows={filteredRows}
-                columns={projectColumns}
-                // pageSize={10}
-              />
+              <DataGrid rows={filteredRows} columns={projectColumns} />
             </div>
           )}
         </div>

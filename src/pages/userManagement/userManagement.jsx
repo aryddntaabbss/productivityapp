@@ -1,9 +1,9 @@
 import "./style/userManagement.scss";
 import axios from "axios";
+import Skeleton from "@mui/material/Skeleton";
 import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
 import Grid from "@material-ui/core/Grid";
 import swal from "sweetalert";
 import { DataGrid } from "@mui/x-data-grid";
@@ -15,16 +15,16 @@ import Navbar from "../../components/layout/Navbar/Navbar";
 import { useNavigate } from "react-router-dom";
 
 const userColumns = [
-  { field: "id", headerName: "ID", width: 120 },
-  { field: "name", headerName: "Nama", width: 250 },
-  { field: "email", headerName: "Email", width: 260 },
+  { field: "id", headerName: "ID", width: 150 },
+  { field: "name", headerName: "Nama", width: 280 },
+  { field: "email", headerName: "Email", width: 300 },
   { field: "usertype", headerName: "User Type", width: 200 },
 ];
 
 const UserManagement = () => {
   const jwtToken = useSelector((state) => state.user.user.data.jwtToken);
   const [rows, setRows] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [showSkeleton, setShowSkeleton] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
@@ -32,28 +32,14 @@ const UserManagement = () => {
     navigate("/add");
   };
 
-  const handleEdit = (id) => {
-    // Waiting
-    const updatedRows = rows.map((row) =>
-      row.id === id ? { ...row, editing: true } : row
-    );
-    setRows(updatedRows);
-  };
-
   const actionColumn = [
     {
       field: "action",
       headerName: "Action",
-      width: 200,
+      width: 100,
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <div
-              className="editButton"
-              onClick={() => handleEdit(params.row.id)}
-            >
-              <EditIcon />
-            </div>
             <div
               className="deleteButton"
               onClick={() => handleDelete(params.row.name)}
@@ -109,12 +95,27 @@ const UserManagement = () => {
     } catch (error) {
       console.error("Error fetching employee data:", error);
     } finally {
-      setLoading(false);
+      setShowSkeleton(false);
+      setTimeout(() => {
+        setShowSkeleton(false);
+      }, 160000);
     }
   };
 
   const handleDelete = async (userName) => {
     try {
+      const shouldDelete = await swal({
+        title: "Are you sure?",
+        text: `Do you really want to delete the user ${userName}?`,
+        icon: "warning",
+        buttons: ["Cancel", "Delete"],
+        dangerMode: true,
+      });
+
+      if (!shouldDelete) {
+        return;
+      }
+
       const response = await axios.delete(DELETE_USER_URL, {
         headers: {
           Authorization: `Bearer ${jwtToken}`,
@@ -126,17 +127,13 @@ const UserManagement = () => {
 
       if (response.data.code === 200) {
         setRows(rows.filter((item) => item.name !== userName));
-        swal("Success", "Pengguna berhasil dihapus.", "success");
+        swal("Success", "User successfully deleted.", "success");
       } else {
-        swal("Error", response.data || "Gagal menghapus pengguna.", "error");
+        swal("Error", response.data || "Failed to delete user.", "error");
       }
     } catch (error) {
       console.error("Error during user deletion:", error);
-      swal(
-        "Error",
-        "Gagal menghapus pengguna. Silakan coba lagi nanti.",
-        "error"
-      );
+      swal("Error", "Failed to delete user. Please try again later.", "error");
     }
   };
 
@@ -171,7 +168,7 @@ const UserManagement = () => {
         <Navbar />
         <Grid container spacing={2}>
           <Grid item xs={3} md={5}>
-            <h1 className="listTitle">Manajemen User</h1>
+            <h1 className="listTitle">Kelola User</h1>
           </Grid>
           <Grid item xs={3} md={5}>
             <div className="searchCrew">
@@ -192,8 +189,10 @@ const UserManagement = () => {
         </Grid>
 
         <div className="datatable">
-          {loading ? (
-            <p>Loading...</p>
+          {showSkeleton ? (
+            <div style={{ height: 500, width: "100%" }}>
+              <Skeleton variant="rounded" height={500} animation="wave" />
+            </div>
           ) : (
             <div
               style={{

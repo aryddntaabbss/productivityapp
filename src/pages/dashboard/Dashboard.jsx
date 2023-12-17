@@ -18,6 +18,7 @@ const Dashboard = () => {
           <Widget type="totalproject" />
           <Widget type="projectberjalan" />
         </div>
+        {/* <Footer /> */}
       </div>
     </div>
   );

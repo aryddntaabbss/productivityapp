@@ -36,6 +36,7 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [userType, setUserType] = useState("");
+  const [userRole, setUserRole] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -125,6 +126,7 @@ export default function Register() {
                       <InputLabel id="user-type-label">User Type</InputLabel>
                       <Select
                         labelId="user-type-label"
+                        margin="normal"
                         id="user-type"
                         value={userType}
                         onChange={(e) => setUserType(e.target.value)}
@@ -132,6 +134,27 @@ export default function Register() {
                       >
                         <MenuItem value="Admin">Admin</MenuItem>
                         <MenuItem value="Manager">Manager</MenuItem>
+                        <MenuItem value="Project Manager">
+                          Project Manager
+                        </MenuItem>
+                        <MenuItem value="Crew">Crew</MenuItem>
+                      </Select>
+                    </FormControl>
+                    <FormControl variant="outlined" className="formControl">
+                      <InputLabel id="user-type-label">User Role</InputLabel>
+                      <Select
+                        labelId="user-type-label"
+                        marginTop="10px"
+                        id="user-type"
+                        value={userRole}
+                        onChange={(e) => setUserRole(e.target.value)}
+                        label="User Type"
+                      >
+                        <MenuItem value="Design">Design</MenuItem>
+                        <MenuItem value="Analist">Analist</MenuItem>
+                        <MenuItem value="QA">QA</MenuItem>
+                        <MenuItem value="FrontEnd">FrontEnd</MenuItem>
+                        <MenuItem value="BackEnd">BackEnd</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
