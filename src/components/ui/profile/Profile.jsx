@@ -2,21 +2,16 @@ import "./profile.scss";
 import React, { useEffect, useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import { useSelector } from "react-redux";
-import Navbar from "../../layout/Navbar/Navbar";
-import Sidebar from "../../layout/Sidebar/Sidebar";
+import MainLayout from "../../layout/Layout/MainLayout";
 import Logo from "../../../assets/rllogo.png";
 
 const Single = () => {
-  // State untuk menyimpan data pengguna
   const [userData, setUserData] = useState(null);
 
-  // Mengambil data pengguna dari Redux state menggunakan useSelector
   const data = useSelector((state) => state.user.user.data);
   console.log("data : ", data);
 
-  // Efek yang berjalan saat data berubah
   useEffect(() => {
-    // Jika data pengguna ada, diuraikan dan diset ke dalam state
     if (data) {
       setUserData({
         id: data.id,
@@ -25,13 +20,11 @@ const Single = () => {
         userType: data.userType,
       });
     }
-  }, [data]); // Efek ini akan berjalan setiap kali data berubah
+  }, [data]);
 
   return (
-    <div className="home">
-      <Sidebar />
+    <MainLayout>
       <div className="homeContainer">
-        <Navbar />
         <div className="title">Profil</div>
         <div className="card">
           <Grid container spacing={2}>
@@ -63,7 +56,7 @@ const Single = () => {
           </Grid>
         </div>
       </div>
-    </div>
+    </MainLayout>
   );
 };
 

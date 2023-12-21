@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import "../style/addUser.scss";
-import axios from "axios";
-import swal from "sweetalert";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
@@ -13,30 +10,15 @@ import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import Sidebar from "../../../components/layout/Sidebar/Sidebar";
-import Navbar from "../../../components/layout/Navbar/Navbar";
-import { ADDUSER_URL } from "../../../routes/authCrud";
+import MainLayout from "../../components/layout/Layout/MainLayout";
+import { useDispatch } from "react-redux";
+import { addUser } from "../../store/UserSlice";
 
-async function AddUser(credentials) {
-  try {
-    const response = await axios.post(ADDUSER_URL, credentials);
-
-    if (response.data.code === 200) {
-      return response.data; // Tidak perlu melempar kesalahan jika sukses
-    } else {
-      throw new Error(response.data.message || "Registrasi gagal");
-    }
-  } catch (error) {
-    console.error("Error saat mendaftarkan pengguna:", error.message);
-    throw error;
-  }
-}
-
-export default function Register() {
+export default function Adduser() {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [userType, setUserType] = useState("");
-  const [userRole, setUserRole] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -59,41 +41,23 @@ export default function Register() {
     }
 
     try {
-      const response = await AddUser({
-        email,
-        username,
-        userType,
-        password,
-        confirmPassword,
-      });
-
-      if ("accessToken" in response) {
-        swal("Success", response.data, "success", {
-          buttons: false,
-          timer: 2000,
-        }).then((value) => {
-          localStorage.setItem("accessToken", response.accessToken);
-          localStorage.setItem("user", JSON.stringify(response.user));
-          window.location.href = "/manajemen-user";
-        });
-      } else {
-        swal("Success", response.data || "Tambah User gagal.", "success");
-      }
+      await dispatch(
+        addUser({
+          email,
+          username,
+          userType,
+          password,
+          confirmPassword,
+        })
+      );
     } catch (error) {
       console.error("Error during registration:", error);
-      swal(
-        "Error",
-        error.message || "Tambah User gagal. Silakan coba lagi nanti.",
-        "error"
-      );
     }
   };
 
   return (
-    <div className="list">
-      <Sidebar />
-      <div className="Container">
-        <Navbar />
+    <MainLayout>
+      <div className="homeContainer">
         <Grid container>
           <h1 className="listTitle">Add User</h1>
 
@@ -137,24 +101,6 @@ export default function Register() {
                         <MenuItem value="Project Manager">
                           Project Manager
                         </MenuItem>
-                        <MenuItem value="Crew">Crew</MenuItem>
-                      </Select>
-                    </FormControl>
-                    <FormControl variant="outlined" className="formControl">
-                      <InputLabel id="user-type-label">User Role</InputLabel>
-                      <Select
-                        labelId="user-type-label"
-                        marginTop="10px"
-                        id="user-type"
-                        value={userRole}
-                        onChange={(e) => setUserRole(e.target.value)}
-                        label="User Type"
-                      >
-                        <MenuItem value="Design">Design</MenuItem>
-                        <MenuItem value="Analist">Analist</MenuItem>
-                        <MenuItem value="QA">QA</MenuItem>
-                        <MenuItem value="FrontEnd">FrontEnd</MenuItem>
-                        <MenuItem value="BackEnd">BackEnd</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
@@ -229,12 +175,7 @@ export default function Register() {
                 </Grid>
 
                 <div className="button">
-                  <Button
-                    type="submit"
-                    fullWidth
-                    // variant="contained"
-                    className="addBtn"
-                  >
+                  <Button type="submit" fullWidth className="addBtn">
                     <p>Add User</p>
                   </Button>
                 </div>
@@ -243,6 +184,6 @@ export default function Register() {
           </div>
         </Grid>
       </div>
-    </div>
+    </MainLayout>
   );
 }

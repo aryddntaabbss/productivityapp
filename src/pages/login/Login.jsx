@@ -1,7 +1,7 @@
-import "./style.scss";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -11,9 +11,6 @@ import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
-import Modal from "@material-ui/core/Modal";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import customAvatarImage from "../../assets/rllogo.png";
@@ -23,40 +20,25 @@ export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertSeverity, setAlertSeverity] = useState("warning");
-  const [alertMessage, setAlertMessage] = useState("");
-  const [setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
-  const isLoading = useSelector((state) => state.user.loading);
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleOpenModal = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!email) {
-      setAlertSeverity("warning");
-      setAlertMessage("Email harus diisi!");
-      setShowAlert(true);
-      return;
-    } else if (!password) {
-      setAlertSeverity("warning");
-      setAlertMessage(" Password harus diisi!");
-      setShowAlert(true);
+    if (!email || !password) {
+      Swal({
+        icon: "warning",
+        title: "Peringatan",
+        text: "Email dan password harus diisi!",
+      });
       return;
     }
 
@@ -65,32 +47,45 @@ export const Login = () => {
       password,
     };
 
+    setIsLoading(true);
+
     try {
       const result = await dispatch(loginUser(userCredentials));
 
       if (result.payload && typeof result.payload === "object") {
         localStorage.setItem("userData", JSON.stringify(result.payload));
+
+        Swal({
+          title: "Login Success!",
+          text: "You have successfully logged in.",
+          icon: "success",
+          timer: 2000,
+          buttons: false,
+        });
+
+        navigate("/");
       } else {
-        setAlertSeverity("error");
+        Swal({
+          icon: "error",
+          title: "Error",
+          text:
+            result.error && result.error.message === "User not found"
+              ? "Akun tidak ditemukan. Silakan cek kembali email dan password Anda."
+              : "Email atau password salah!",
+        });
 
-        if (result.error && result.error.message === "User not found") {
-          setAlertMessage(
-            "Akun tidak ditemukan. Silakan cek kembali email dan password Anda."
-          );
-        } else {
-          setAlertMessage("Email atau password salah!");
-        }
-
-        setShowAlert(true);
         await new Promise((resolve) => setTimeout(resolve, 3000));
-        handleOpenModal();
+        setIsLoading(false);
       }
     } catch (error) {
-      setAlertSeverity("error");
-      setAlertMessage("Terjadi kesalahan. Silakan coba lagi nanti.");
-      setShowAlert(true);
+      Swal({
+        icon: "error",
+        title: "Error",
+        text: "Terjadi kesalahan. Silakan coba lagi nanti.",
+      });
+
       await new Promise((resolve) => setTimeout(resolve, 3000));
-      handleOpenModal();
+      setIsLoading(false);
     }
   };
 
@@ -105,8 +100,6 @@ export const Login = () => {
 
     if (isAuthenticated) {
       navigate("/");
-    } else {
-      navigate("/login");
     }
   }, [isAuthenticated, navigate, dispatch]);
 
@@ -114,7 +107,7 @@ export const Login = () => {
     <Grid container className="root">
       <CssBaseline />
       <Grid
-        className="card"
+        className="loginCard"
         item
         xs={12}
         md={4}
@@ -185,31 +178,12 @@ export const Login = () => {
             </Button>
             <br />
           </form>
-          {showAlert && (
-            <Modal
-              open={true}
-              onClose={() => setShowAlert(false)}
-              className="modal"
-            >
-              <div className="modal">
-                <Alert
-                  severity={alertSeverity}
-                  onClose={() => setShowAlert(false)}
-                >
-                  <AlertTitle>
-                    {alertSeverity === "warning" ? "Peringatan" : "Error"}
-                  </AlertTitle>
-                  {alertMessage}
-                </Alert>
-              </div>
-            </Modal>
-          )}
 
           {isLoading && (
             <Backdrop
               sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
               open={true}
-              onClick={handleClose}
+              onClick={() => setIsLoading(false)}
             >
               <CircularProgress color="inherit" />
             </Backdrop>

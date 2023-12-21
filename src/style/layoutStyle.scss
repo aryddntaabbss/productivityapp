@@ -1,35 +1,66 @@
-.sidebar {
-  padding-left: 35px;
-  padding-right: 35px;
-  flex: 1;
-  min-height: 100vh;
-  background-color: white;
+//  MainLayout Style
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  background-color: #e3e3e3;
+}
 
+.flex-container {
+  display: flex;
+}
+
+main {
+  flex: 1;
+}
+
+// Navbar styling
+.navbar {
+  background-color: #ffffff;
+
+  // Top section
   .top {
     align-items: center;
     justify-content: center;
     margin-top: 10px;
+    margin-left: 40px;
 
+    // Logo styling
     img {
       width: 150px;
       height: auto;
     }
   }
 
+  // User type styling
+  .usertype {
+    margin-right: 3%;
+  }
+}
+
+// Sidebar styling
+.sidebar {
+  padding: 35px;
+  flex: 1;
+  height: auto;
+  background-color: white;
+  max-width: 15%;
+
+  // Center section
   .center {
     ul {
       list-style: none;
       margin: 0;
       padding: 0;
 
+      // List item title styling
       .title {
         font-size: 13px;
         font-weight: bold;
         color: #999;
-        margin-top: 15px;
         margin-bottom: 5px;
       }
 
+      // List item styling
       li {
         display: flex;
         align-items: center;
@@ -38,15 +69,13 @@
         margin-bottom: 5px;
         cursor: pointer;
 
+        // Hover effect
         &:hover {
-          // Gaya hover untuk semua link, kecuali yang aktif
           background: linear-gradient(to right, #197391, #0f9eea);
-
           .icon {
             font-size: 18px;
             color: #ffffff;
           }
-
           span {
             font-size: 13px;
             font-weight: 600;
@@ -55,11 +84,11 @@
           }
         }
 
+        // Default state
         .icon {
           font-size: 18px;
           color: #000000;
         }
-
         span {
           font-size: 13px;
           font-weight: 600;
@@ -67,15 +96,13 @@
           margin-left: 10px;
         }
 
+        // Active state
         &.active {
-          // Gaya untuk link aktif
           background: linear-gradient(to right, #197391, #0f9eea);
-
           .icon {
             font-size: 18px;
             color: #ffffff;
           }
-
           span {
             font-size: 13px;
             font-weight: 600;
@@ -85,5 +112,30 @@
         }
       }
     }
+  }
+}
+
+// Media query for smaller screens
+@media (max-width: 768px) {
+  .sidebar {
+    padding: 15px;
+    max-width: 100%;
+
+    .center ul li {
+      padding: 10px;
+      justify-content: center;
+      text-align: center;
+      span {
+        display: none;
+      }
+    }
+
+    .center ul li .icon {
+      font-size: 24px;
+    }
+  }
+
+  .center ul .title {
+    font-size: 12px;
   }
 }

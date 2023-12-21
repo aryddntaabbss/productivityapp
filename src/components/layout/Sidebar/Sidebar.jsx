@@ -5,8 +5,6 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import DescriptionIcon from "@mui/icons-material/Description";
 import ContactPageIcon from "@mui/icons-material/ContactPage";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import customAvatarImage from "../../../assets/rllogo.png";
-import "./sidebar.scss";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -15,18 +13,10 @@ const Sidebar = () => {
     return location.pathname === path;
   };
 
-  // Mengambil userType dari localStorage
   const userType = useSelector((state) => state.user.userType);
 
   return (
     <div className="sidebar">
-      <div className="top">
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <div>
-            <img src={customAvatarImage} alt="Avatar" />
-          </div>
-        </Link>
-      </div>
       <div className="center">
         <ul>
           <Link to="/" style={{ textDecoration: "none" }}>

@@ -1,4 +1,3 @@
-import "./style/userManagement.scss";
 import axios from "axios";
 import Skeleton from "@mui/material/Skeleton";
 import React, { useState, useEffect } from "react";
@@ -7,15 +6,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Grid from "@material-ui/core/Grid";
 import swal from "sweetalert";
 import { DataGrid } from "@mui/x-data-grid";
-import { DASHBOARD_USER_URL, DELETE_USER_URL } from "../../routes/authCrud";
+import { DASHBOARD_USER_URL, DELETE_USER_URL } from "../../routes/ApiBase";
 import { useSelector } from "react-redux";
 import Search from "../../components/ui/search/Search";
-import Sidebar from "../../components/layout/Sidebar/Sidebar";
-import Navbar from "../../components/layout/Navbar/Navbar";
+import MainLayout from "../../components/layout/Layout/MainLayout";
 import { useNavigate } from "react-router-dom";
 
 const userColumns = [
-  { field: "id", headerName: "ID", width: 150 },
+  { field: "id", headerName: "ID", width: 130 },
   { field: "name", headerName: "Nama", width: 280 },
   { field: "email", headerName: "Email", width: 300 },
   { field: "usertype", headerName: "User Type", width: 200 },
@@ -52,12 +50,8 @@ const UserManagement = () => {
     },
   ];
 
-  const getJwtTokenFromLocalStorage = () => jwtToken;
-
   const fetchUserRows = async () => {
     try {
-      const jwtToken = getJwtTokenFromLocalStorage();
-
       if (!jwtToken) {
         console.error("jwtToken tidak ditemukan di local storage");
         return [];
@@ -162,10 +156,8 @@ const UserManagement = () => {
   const filteredRows = filterData(rows);
 
   return (
-    <div className="list">
-      <Sidebar />
-      <div className="listContainer">
-        <Navbar />
+    <MainLayout>
+      <div className="homeContainer">
         <Grid container spacing={2}>
           <Grid item xs={3} md={5}>
             <h1 className="listTitle">Kelola User</h1>
@@ -190,13 +182,13 @@ const UserManagement = () => {
 
         <div className="datatable">
           {showSkeleton ? (
-            <div style={{ height: 500, width: "100%" }}>
-              <Skeleton variant="rounded" height={500} animation="wave" />
+            <div style={{ height: 480, width: "100%" }}>
+              <Skeleton variant="rounded" height={480} animation="wave" />
             </div>
           ) : (
             <div
               style={{
-                height: 500,
+                height: 480,
                 width: "100%",
                 backgroundColor: "#ffffff",
                 borderRadius: "5px",
@@ -210,7 +202,7 @@ const UserManagement = () => {
           )}
         </div>
       </div>
-    </div>
+    </MainLayout>
   );
 };
 

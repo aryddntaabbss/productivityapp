@@ -1,25 +1,23 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { DataGrid } from "@mui/x-data-grid";
 import Skeleton from "@mui/material/Skeleton";
 import Grid from "@material-ui/core/Grid";
-import { DataGrid } from "@mui/x-data-grid";
-import { DASHBOARD_URL } from "../../routes/authCrud";
+import { DASHBOARD_URL } from "../../routes/ApiBase";
 import { useSelector } from "react-redux";
 import Search from "../../components/ui/search/Search";
-import Sidebar from "../../components/layout/Sidebar/Sidebar";
-import Navbar from "../../components/layout/Navbar/Navbar";
-import "./style/userManagement.scss";
+import MainLayout from "../../components/layout/Layout/MainLayout";
 
-const userColumns = [
-  { field: "id", headerName: "ID", width: 120 },
-  { field: "name", headerName: "Nama", width: 220 },
-  { field: "email", headerName: "Email", width: 220 },
-  { field: "crewrole", headerName: "Role", width: 180 },
-  { field: "productivities", headerName: "Productivity", width: 140 },
-  { field: "contributions", headerName: "Contribution", width: 140 },
+const projectColumns = [
+  { field: "id", headerName: "ID", width: 110 },
+  { field: "name", headerName: "Nama Projek", width: 250 },
+  { field: "status", headerName: "Status", width: 110 },
+  { field: "createdAt", headerName: "Dibuat Pada", width: 180 },
+  { field: "startDate", headerName: "Tanggal Mulai", width: 180 },
+  { field: "endDate", headerName: "Tanggal Selesai", width: 180 },
 ];
 
-const ListUser = () => {
+const ProjectManagement = () => {
   const jwtToken = useSelector((state) => state.user.user.data.jwtToken);
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,7 +25,7 @@ const ListUser = () => {
 
   const getJwtTokenFromLocalStorage = () => jwtToken;
 
-  const fetchUserRows = async () => {
+  const fetchProjectRows = async () => {
     try {
       const jwtToken = getJwtTokenFromLocalStorage();
 
@@ -39,40 +37,40 @@ const ListUser = () => {
       const headers = { Authorization: `Bearer ${jwtToken}` };
       const response = await axios.get(DASHBOARD_URL, { headers });
 
-      const employees = response.data;
+      const projects = response.data;
 
-      if (!employees || !Array.isArray(employees.data.employees)) {
-        console.log("Data karyawan : ", employees.data.employees);
+      if (!projects || !Array.isArray(projects.data.projects)) {
+        console.log("Data proyek : ", projects.data.projects);
         return [];
       }
 
-      const employeeRows = employees.data.employees.map((employee) => {
-        const productivityPercentage = `${employee.productivity} %`;
-        const contributionPercentage = `${employee.contribution} %`;
+      const projectRows = projects.data.projects.map((project) => {
+        const startDateObject = new Date(project.startDate);
+        const endDateObject = new Date(project.endDate);
+        const createdDateObject = new Date(project.createdAt);
 
         return {
-          id: employee.id,
-          name: employee.name,
-          email: employee.email,
-          crewrole: employee.role,
-          productivities: productivityPercentage,
-          contributions: contributionPercentage,
+          id: project.id,
+          name: project.name,
+          status: project.status ? "Complete" : "Incomplete",
+          createdAt: createdDateObject.toLocaleDateString(),
+          startDate: startDateObject.toLocaleDateString(),
+          endDate: endDateObject.toLocaleDateString(),
         };
       });
-
-      return employeeRows;
+      return projectRows;
     } catch (error) {
-      console.error("Error fetching employee data:", error);
+      console.error("Error fetching project data:", error);
       return [];
     }
   };
 
   const fetchData = async () => {
     try {
-      const employeeRows = await fetchUserRows();
-      setRows(employeeRows);
+      const projectRows = await fetchProjectRows();
+      setRows(projectRows);
     } catch (error) {
-      console.error("Error fetching employee data:", error);
+      console.error("Error fetching project data:", error);
     } finally {
       setLoading(false);
     }
@@ -86,10 +84,10 @@ const ListUser = () => {
     return data.filter((row) => {
       const normalizedSearchTerm = searchTerm.toLowerCase();
       return (
-        (row.id && row.id.toLowerCase().includes(normalizedSearchTerm)) ||
         (row.name && row.name.toLowerCase().includes(normalizedSearchTerm)) ||
         (row.email && row.email.toLowerCase().includes(normalizedSearchTerm)) ||
-        (row.role && row.role.toLowerCase().includes(normalizedSearchTerm))
+        (row.crewrole &&
+          row.crewrole.toLowerCase().includes(normalizedSearchTerm))
       );
     });
   };
@@ -101,13 +99,11 @@ const ListUser = () => {
   const filteredRows = filterData(rows);
 
   return (
-    <div className="list">
-      <Sidebar />
-      <div className="listContainer">
-        <Navbar />
+    <MainLayout>
+      <div className="homeContainer">
         <Grid container spacing={2}>
           <Grid item xs={3} md={6}>
-            <h1 className="listTitle">List Karyawan</h1>
+            <h1 className="listTitle">List Projek</h1>
           </Grid>
           <Grid item xs={3} md={6}>
             <div className="searchCrew">
@@ -115,27 +111,28 @@ const ListUser = () => {
             </div>
           </Grid>
         </Grid>
+
         <div className="datatable">
           {loading ? (
-            <div style={{ height: 500, width: "100%" }}>
-              <Skeleton variant="rounded" height={500} animation="wave" />
+            <div style={{ height: 480, width: "100%" }}>
+              <Skeleton variant="rounded" height={480} animation="wave" />
             </div>
           ) : (
             <div
               style={{
-                height: 500,
+                height: 480,
                 width: "100%",
                 backgroundColor: "#ffffff",
                 borderRadius: "5px",
               }}
             >
-              <DataGrid rows={filteredRows} columns={userColumns} />
+              <DataGrid rows={filteredRows} columns={projectColumns} />
             </div>
           )}
         </div>
       </div>
-    </div>
+    </MainLayout>
   );
 };
 
-export default ListUser;
+export default ProjectManagement;

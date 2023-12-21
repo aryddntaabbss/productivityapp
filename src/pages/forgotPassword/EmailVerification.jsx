@@ -1,4 +1,3 @@
-import "./style.scss";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
@@ -14,7 +13,7 @@ import Grid from "@material-ui/core/Grid";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Modal from "@material-ui/core/Modal";
-import { FORGOT_URL } from "../../routes/authCrud";
+import { FORGOT_URL } from "../../routes/ApiBase";
 
 const EmailVerification = () => {
   const dispatch = useDispatch();
@@ -33,7 +32,7 @@ const EmailVerification = () => {
 
         dispatch(setUser(userData));
 
-        return response.data; // Ubah agar mengembalikan seluruh response
+        return response.data;
       } catch (error) {
         return rejectWithValue(error.message);
       }
@@ -79,11 +78,11 @@ const EmailVerification = () => {
       <Grid item xs={12} md={5} component={Paper} elevation={6}>
         <div className="paper">
           <Typography component="h1" variant="h3" className="title">
-            <p>Forgot Password?</p>
+            <h3>Forgot Password?</h3>
           </Typography>
           <Typography component="h1" variant="h3" className="paragraph">
             <p>
-              Don't worry! It occurs. Please enter the email address linked with
+              Don't worry! It occurs. please enter the email address linked with
               your account.
             </p>
           </Typography>
@@ -108,9 +107,12 @@ const EmailVerification = () => {
             >
               <p>Send Code</p>
             </Button>
-            <div className="login">
+            <div className="backLogin">
               Remember Password?
-              <Link to="/login"> Login</Link>
+              <Link to="/login" className="link">
+                {" "}
+                Login
+              </Link>
             </div>
           </form>
           <Modal

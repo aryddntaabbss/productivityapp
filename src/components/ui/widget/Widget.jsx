@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import PersonIcon from "@mui/icons-material/Person";
 import FolderIcon from "@mui/icons-material/Folder";
-import PendingIcon from "@mui/icons-material/Pending";
-import { DASHBOARD_URL } from "../../../routes/authCrud";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import { DASHBOARD_URL } from "../../../routes/ApiBase";
 import "./widget.scss";
 
 const Widget = ({ type }) => {
@@ -12,6 +12,8 @@ const Widget = ({ type }) => {
   const [data, setData] = useState({
     title: "",
     counter: "",
+    complete: "",
+    incomplete: "",
     icon: null,
   });
 
@@ -26,11 +28,22 @@ const Widget = ({ type }) => {
 
         const result = response.data;
 
+        const employees = response.data.data.employees;
+
+        const totalProductivity = employees.reduce(
+          (sum, employee) => sum + employee.productivity,
+          0
+        );
+        const averageProductivity = (
+          totalProductivity / employees.length
+        ).toFixed(0);
+
         switch (type) {
           case "karyawan":
             setData({
               title: "Karyawan",
               counter: result.data.dashboard.employeeCount,
+
               icon: (
                 <PersonIcon
                   className="icon"
@@ -43,10 +56,12 @@ const Widget = ({ type }) => {
             });
             break;
 
-          case "totalproject":
+          case "project":
             setData({
-              title: "Total Project",
+              title: "Project",
               counter: result.data.dashboard.projectCount,
+              complete: result.data.dashboard.projectComplete,
+              incomplete: result.data.dashboard.projectIncomplete,
               icon: (
                 <FolderIcon
                   className="icon"
@@ -58,12 +73,12 @@ const Widget = ({ type }) => {
               ),
             });
             break;
-          case "projectberjalan":
+          case "ratarata":
             setData({
-              title: "Project Berjalan",
-              counter: result.data.dashboard.projectInProgress,
+              title: "Rata-Rata Productivity",
+              counter: `${averageProductivity} %`,
               icon: (
-                <PendingIcon
+                <BarChartIcon
                   className="icon"
                   style={{
                     backgroundColor: "#E3E3E3",
@@ -76,9 +91,6 @@ const Widget = ({ type }) => {
           default:
             break;
         }
-
-        //Test Karyawan
-        // console.log("haluu : ", result.data.employees.normalizedEmail);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -87,15 +99,31 @@ const Widget = ({ type }) => {
     fetchData();
   }, [type, jwtToken]);
 
+  // ...
+
   return (
     <div className="widget">
       <div className="left">
         <span className="title">{data.title}</span>
-        <span className="counter"> {data.counter}</span>
+        <span className="counter">{data.counter}</span>
       </div>
-      <div className="right">{data.icon}</div>
+      <div className="right">
+        <div className="percentage">
+          <div className="indicator">
+            <span className="positive">
+              {data.complete && `Complete : ${data.complete}`}
+            </span>
+            <br />
+            <span className="negative">
+              {data.incomplete && `Incomplete : ${data.incomplete}`}
+            </span>
+          </div>
+        </div>
+        {data.icon}
+      </div>
     </div>
   );
+  // ...
 };
 
 export default Widget;
