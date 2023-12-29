@@ -1,24 +1,15 @@
 .home {
   display: flex;
-  background-color: #e3e3e3;
+  padding: 20px;
+  gap: 20px;
 
-  .profileDetails {
-    margin: 5%;
-  }
-
-  .title {
+  .listTitle {
     width: 100%;
     font-size: 30px;
     font-weight: bold;
-    margin: 2%;
+    margin-top: 2%;
     display: flex;
-    margin-top: 3%;
-  }
-
-  .img {
-    margin: 5%;
-    width: 90%;
-    align-items: center;
+    margin-left: 2%;
   }
 
   .card {
@@ -28,15 +19,32 @@
     height: auto;
     padding: 10px;
     align-items: center;
+    justify-content: center;
+    text-align: center;
     border-radius: 5px;
+    margin-bottom: 44px;
+  }
+
+  .img {
+    margin: 3%;
+    width: 7%;
+    align-items: center;
+  }
+
+  .field-name {
+    text-decoration: none;
+    font-size: 25px;
+    color: #0f9eea;
+    margin-bottom: 3%;
   }
 
   .field {
-    border: 2px solid #cdcdcd;
-    width: auto;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 10px 10px 10px 0;
+    margin-bottom: 20%;
+  }
+
+  .text-header {
+    margin-bottom: 5%;
+    font-weight: bold;
   }
 
   .item {

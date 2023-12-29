@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import { useSelector } from "react-redux";
 import MainLayout from "../../layout/Layout/MainLayout";
-import Logo from "../../../assets/rllogo.png";
+import Logo from "../../../assets/logo.png";
 
 const Single = () => {
   const [userData, setUserData] = useState(null);
@@ -24,37 +24,40 @@ const Single = () => {
 
   return (
     <MainLayout>
-      <div className="homeContainer">
-        <div className="title">Profil</div>
-        <div className="card">
-          <Grid container spacing={2}>
-            <Grid item xs={3} md={5}>
+      <div className="home">
+        <Grid container spacing={2}>
+          <Grid item xs={3} md={5}>
+            <div className="listTitle">Profil</div>
+          </Grid>
+          <div className="card">
+            <Grid item xs={3} md={12}>
               <img src={Logo} alt="Logo" className="img" />
-            </Grid>
-            <Grid item xs={3} md={7}>
               {userData && (
                 <div className="profileDetails">
-                  ID
-                  <div className="field">
-                    <p>{userData.id}</p>
-                  </div>
-                  Nama
-                  <div className="field">
+                  <div className="field-name">
                     <p>{userData.name}</p>
                   </div>
-                  Email
                   <div className="field">
-                    <p>{userData.email}</p>
-                  </div>
-                  User Type
-                  <div className="field">
-                    <p>{userData.userType}</p>
+                    <Grid container spacing={2}>
+                      <Grid item md={4}>
+                        <div className="text-header">ID</div>
+                        <p>{userData.id}</p>
+                      </Grid>
+                      <Grid item md={4}>
+                        <div className="text-header">EMAIL</div>
+                        <p>{userData.email}</p>
+                      </Grid>
+                      <Grid item md={4}>
+                        <div className="text-header">USER TYPE</div>
+                        <p>{userData.userType}</p>
+                      </Grid>
+                    </Grid>
                   </div>
                 </div>
               )}
             </Grid>
-          </Grid>
-        </div>
+          </div>
+        </Grid>
       </div>
     </MainLayout>
   );
